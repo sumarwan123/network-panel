@@ -51,6 +51,4 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Internal server error' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 NETWORK PANEL running on http://localhost:${PORT}`);
-});
+export default app;
