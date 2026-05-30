@@ -11,45 +11,53 @@ class DatabaseManager {
   }
 
   ensureDbExists() {
+  try {
     if (!fs.existsSync(dbPath)) {
-      const defaultDb = {
-        users: [],
-        panels: [],
-        payments: [],
-        resellers: [],
-        adminSettings: {
-          pterodactyl_url: 'https://panel.example.com',
-          pterodactyl_api_key: '',
-          location_id: 1,
-          node_id: 1,
-          egg_id: 15,
-          discount_percentage: 0,
-          discount_rupiah: 0,
-          info_message: 'Selamat datang di NETWORK PANEL!'
-        }
-      };
-      fs.writeFileSync(dbPath, JSON.stringify(defaultDb, null, 2));
+      const defaultDb = this.getDefaultDb();
+
+      fs.writeFileSync(
+        dbPath,
+        JSON.stringify(defaultDb, null, 2),
+        'utf8'
+      );
     }
+  } catch (error) {
+    console.error('Database initialization error:', error);
+  }
   }
 
   readDb() {
-    try {
-      const data = fs.readFileSync(dbPath, 'utf8');
-      return JSON.parse(data);
-    } catch (error) {
-      console.error('Database read error:', error);
+  try {
+    if (!fs.existsSync(dbPath)) {
       return this.getDefaultDb();
     }
+
+    const data = fs.readFileSync(dbPath, 'utf8');
+
+    if (!data || data.trim() === '') {
+      return this.getDefaultDb();
+    }
+
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Database read error:', error);
+    return this.getDefaultDb();
+  }
   }
 
   writeDb(data) {
-    try {
-      fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
-      return true;
-    } catch (error) {
-      console.error('Database write error:', error);
-      return false;
-    }
+  try {
+    fs.writeFileSync(
+      dbPath,
+      JSON.stringify(data, null, 2),
+      'utf8'
+    );
+
+    return true;
+  } catch (error) {
+    console.error('Database write error:', error);
+    return false;
+  }
   }
 
   getDefaultDb() {
