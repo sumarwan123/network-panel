@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - NETWORK PANEL</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-box">
+      <div class="auth-header">
+        <i class="fas fa-server"></i>
+        <h1>NETWORK PANEL</h1>
+        <p>Platform Pembelian Server Pterodactyl</p>
+      </div>
+
+      <div id="admin-toggle" class="admin-toggle">
+        <button id="user-tab" class="tab-btn active" onclick="switchTab('user')">User Login</button>
+        <button id="admin-tab" class="tab-btn" onclick="switchTab('admin')">Admin Login</button>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Belum memiliki akun? <a href="/register.html">Daftar di sini</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    let loginType = 'user';
+
+    function switchTab(type) {
+      loginType = type;
+      document.getElementById('user-tab').classList.toggle('active');
+      document.getElementById('admin-tab').classList.toggle('active');
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('isAdmin', data.isAdmin || false);
+          if (data.user) {
+            localStorage.setItem('user', JSON.stringify(data.user));
+          }
+          showToast('Login berhasil!', 'success');
+          setTimeout(() => {
+            window.location.href = data.isAdmin ? '/admin.html' : '/dashboard.html';
+          }, 1500);
+        } else {
+          showToast(data.message, 'error');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        showToast('Terjadi kesalahan', 'error');
+      }
+    }
+  </script>
+</body>
+</html>

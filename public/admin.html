@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - NETWORK PANEL</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <i class="fas fa-crown"></i>
+        <h2>ADMIN PANEL</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-link active" onclick="switchAdminMenu('dashboard')">
+          <i class="fas fa-chart-line"></i> Dashboard
+        </a>
+        <a href="#" class="nav-link" onclick="switchAdminMenu('users')">
+          <i class="fas fa-users"></i> Kelola User
+        </a>
+        <a href="#" class="nav-link" onclick="switchAdminMenu('panels')">
+          <i class="fas fa-server"></i> Lihat Panel
+        </a>
+        <a href="#" class="nav-link" onclick="switchAdminMenu('payments')">
+          <i class="fas fa-money-bill"></i> Statistik Pembayaran
+        </a>
+        <a href="#" class="nav-link" onclick="switchAdminMenu('resellers')">
+          <i class="fas fa-crown"></i> Kelola Reseller
+        </a>
+        <a href="#" class="nav-link" onclick="switchAdminMenu('settings')">
+          <i class="fas fa-cog"></i> Pengaturan
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn btn-danger btn-block" onclick="handleAdminLogout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main-content">
+      <!-- Dashboard Section -->
+      <section id="admin-dashboard" class="admin-section active">
+        <div class="page-header">
+          <h1>Dashboard Admin</h1>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card large">
+            <i class="fas fa-users"></i>
+            <div>
+              <h3 id="totalUsers">0</h3>
+              <p>Total User</p>
+            </div>
+          </div>
+          <div class="stat-card large">
+            <i class="fas fa-server"></i>
+            <div>
+              <h3 id="totalPanels">0</h3>
+              <p>Total Panel</p>
+            </div>
+          </div>
+          <div class="stat-card large">
+            <i class="fas fa-check-circle" style="color: #28a745;"></i>
+            <div>
+              <h3 id="successPayments">0</h3>
+              <p>Pembayaran Sukses</p>
+            </div>
+          </div>
+          <div class="stat-card large">
+            <i class="fas fa-money-bill-wave"></i>
+            <div>
+              <h3 id="totalRevenue">Rp 0</h3>
+              <p>Total Revenue</p>
+            </div>
+          </div>
+          <div class="stat-card large">
+            <i class="fas fa-crown"></i>
+            <div>
+              <h3 id="totalResellers">0</h3>
+              <p>Total Reseller</p>
+            </div>
+          </div>
+          <div class="stat-card large">
+            <i class="fas fa-check-circle" style="color: #ffc107;"></i>
+            <div>
+              <h3 id="activeResellers">0</h3>
+              <p>Reseller Aktif</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Users Section -->
+      <section id="admin-users" class="admin-section">
+        <div class="page-header">
+          <h1>Kelola User</h1>
+        </div>
+        <div class="table-container">
+          <table id="usersTable" class="admin-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>No Telepon</th>
+                <th>Tipe</th>
+                <th>Tanggal Daftar</th>
+              </tr>
+            </thead>
+            <tbody id="usersList"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Panels Section -->
+      <section id="admin-panels" class="admin-section">
+        <div class="page-header">
+          <h1>Lihat Semua Panel</h1>
+        </div>
+        <div class="table-container">
+          <table id="panelsTable" class="admin-table">
+            <thead>
+              <tr>
+                <th>Server Name</th>
+                <th>Username</th>
+                <th>RAM</th>
+                <th>Server ID</th>
+                <th>Status</th>
+                <th>Tanggal Dibuat</th>
+              </tr>
+            </thead>
+            <tbody id="panelsList"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Payments Section -->
+      <section id="admin-payments" class="admin-section">
+        <div class="page-header">
+          <h1>Statistik Pembayaran</h1>
+        </div>
+        <div class="table-container">
+          <table id="paymentsTable" class="admin-table">
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>User ID</th>
+                <th>Amount</th>
+                <th>Tipe</th>
+                <th>Status</th>
+                <th>Tanggal</th>
+              </tr>
+            </thead>
+            <tbody id="paymentsList"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Resellers Section -->
+      <section id="admin-resellers" class="admin-section">
+        <div class="page-header">
+          <h1>Kelola Reseller</h1>
+          <button class="btn btn-primary" onclick="openCreateResellerModal()">Buat Reseller Baru</button>
+        </div>
+        <div class="table-container">
+          <table id="resellersTable" class="admin-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Plan</th>
+                <th>Status</th>
+                <th>Expiry Date</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="resellersList"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Settings Section -->
+      <section id="admin-settings" class="admin-section">
+        <div class="page-header">
+          <h1>Pengaturan Panel</h1>
+        </div>
+
+        <div class="settings-grid">
+          <!-- Pterodactyl Settings -->
+          <div class="settings-card">
+            <h2>Konfigurasi Pterodactyl</h2>
+            <form id="pterodactylForm" onsubmit="updatePterodactylSettings(event)">
+              <div class="form-group">
+                <label>Panel URL</label>
+                <input type="url" id="panelUrl" required>
+              </div>
+              <div class="form-group">
+                <label>API Key</label>
+                <input type="password" id="apiKey" required>
+              </div>
+              <div class="form-group">
+                <label>Location ID</label>
+                <input type="number" id="locationId" required>
+              </div>
+              <div class="form-group">
+                <label>Node ID</label>
+                <input type="number" id="nodeId" required>
+              </div>
+              <div class="form-group">
+                <label>Egg ID</label>
+                <input type="number" id="eggId" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Simpan Pterodactyl</button>
+            </form>
+          </div>
+
+          <!-- Discount Settings -->
+          <div class="settings-card">
+            <h2>Pengaturan Diskon</h2>
+            <form id="discountForm" onsubmit="updateDiscountSettings(event)">
+              <div class="form-group">
+                <label>Diskon Persentase (%)</label>
+                <input type="number" id="discountPercentage" min="0" max="100">
+              </div>
+              <div class="form-group">
+                <label>Diskon Rupiah (Rp)</label>
+                <input type="number" id="discountRupiah" min="0">
+              </div>
+              <button type="submit" class="btn btn-primary">Terapkan Diskon</button>
+              <button type="button" class="btn btn-warning" onclick="resetDiscount()">Reset ke Harga Normal</button>
+            </form>
+          </div>
+
+          <!-- Info Message Settings -->
+          <div class="settings-card">
+            <h2>Pengaturan Info Terkini</h2>
+            <form id="infoForm" onsubmit="updateInfoMessage(event)">
+              <div class="form-group">
+                <label>Pesan Informasi</label>
+                <textarea id="infoMessage" rows="5" placeholder="Tulis pesan informasi terkini untuk user..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Simpan Info</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Buat Reseller -->
+  <div id="createResellerModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Buat Akun Reseller</h2>
+        <button class="close-btn" onclick="closeCreateResellerModal()">&times;</button>
+      </div>
+      <form onsubmit="createReseller(event)">
+        <div class="form-group">
+          <label>Username Reseller</label>
+          <input type="text" id="resellerUsername" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="resellerPassword" required>
+        </div>
+        <div class="form-group">
+          <label>Plan</label>
+          <select id="resellerPlan" required>
+            <option value="">Pilih Plan</option>
+            <option value="monthly">1 Bulan (Rp 15.000)</option>
+            <option value="permanent">Permanen (Rp 3.000)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>User ID (Opsional)</label>
+          <input type="text" id="resellerUserId" placeholder="Kosongkan untuk akun standalone">
+        </div>
+        <button type="submit" class="btn btn-primary">Buat Reseller</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>
