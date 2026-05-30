@@ -1,0 +1,16 @@
+{
+  "users": [],
+  "panels": [],
+  "payments": [],
+  "resellers": [],
+  "adminSettings": {
+    "pterodactyl_url": "",
+    "pterodactyl_api_key": "",
+    "location_id": 1,
+    "node_id": 1,
+    "egg_id": 15,
+    "discount_percentage": 0,
+    "discount_rupiah": 0,
+    "info_message": "Selamat datang di NETWORK PANEL!"
+  }
+}
