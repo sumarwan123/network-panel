@@ -328,7 +328,7 @@ Kirim notifikasi ke semua user:
 2. Refresh halaman user
 3. Buat payment baru
 
-## 📋 Checklist Pre-Launch
+## 🎯 Checklist Pre-Launch
 
 - [ ] Setup Pterodactyl panel dengan API key
 - [ ] Daftar & setup UangX payment gateway

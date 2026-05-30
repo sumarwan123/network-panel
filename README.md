@@ -24,7 +24,7 @@
 - 📢 **Info Message** - Kirim notifikasi terkini ke semua user
 
 ### Reseller Features
-- 🔑 **Akses Reseller** - Login terpisah untuk reseller
+- 🔓 **Akses Reseller** - Login terpisah untuk reseller
 - 📋 **Buat Panel Sepuasnya** - Unlimited panel creation untuk reseller
 - ⏰ **Manajemen Akses** - Auto-delete untuk akses 1 bulan
 
